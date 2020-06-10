@@ -5,16 +5,7 @@ void ParamedicCommander::action(std::vector<std::vector<Soldier*>> &board,std::p
     int y1 = source.second;
     Soldier* paramedicCommander = board[x1][y1];
     std::stack<std::pair<int,int>> myPlatoon;
-
-    for(int i = -1; i <= 1 ; i++) {
-        for(int j = -1; j <= 1 ; j++) {
-            if(board[x1 + i][y1 + j] != nullptr) {
-                if(board[x1 + i][y1 + j]->getPlayerNumber() == paramedicCommander->getPlayerNumber()) {
-                    board[x1 + i][y1 + j]->setHP(board[x1 + i][y1 + j]->getMaxHP());
-                }
-            }
-        }
-    }
+    healAround(board,x1,y1);
     for(int i = 0 ; i < board.size() ; i++) {
         for(int j = 0 ; j < board[i].size() ; j++) {
             if(board[i][j] != nullptr) {
@@ -28,7 +19,7 @@ void ParamedicCommander::action(std::vector<std::vector<Soldier*>> &board,std::p
     }
     while(!myPlatoon.empty()){
         std::pair<int,int> current = myPlatoon.top();
-        board[current.first][current.second]->action(board,current);
+        healAround(board,current.first,current.second);
         myPlatoon.pop();
     }
 };
